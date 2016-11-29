@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         WebView wv;
+        WebView wv2;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -73,7 +74,16 @@ public class MainActivity extends AppCompatActivity {
         wv = (WebView) findViewById(R.id.webView);
         wv.setWebChromeClient(new WebChromeClient());
         wv.getSettings().setJavaScriptEnabled(true);
-        wv.loadUrl("https://thingspeak.com/channels/176124/charts/1?api_key=9AK9G8B8BN9GKIK8&bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Temperature&type=line&width=1& height=1");
+        wv.getSettings().setUseWideViewPort(true);      //可設定表格大小
+        wv.getSettings().setLoadWithOverviewMode(true); //可設定表格大小
+        wv.loadUrl("https://thingspeak.com/channels/176124/charts/1?api_key=9AK9G8B8BN9GKIK8&bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Temperature&type=line&width=500");
+
+        wv2 = (WebView) findViewById(R.id.webView2);
+        wv2.setWebChromeClient(new WebChromeClient());
+        wv2.getSettings().setJavaScriptEnabled(true);
+        wv2.getSettings().setUseWideViewPort(true);
+        wv2.getSettings().setLoadWithOverviewMode(true);
+        wv2.loadUrl("https://thingspeak.com/channels/176124/charts/1?api_key=9AK9G8B8BN9GKIK8&bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Temperature&type=line&width=500");
     }
 }
 
