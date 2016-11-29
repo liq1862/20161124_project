@@ -46,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
                             String temp = new JSONArray (feeds).getJSONObject(0).getString("field1");
                             Log.d("NET", temp);
                             String created_at = new JSONArray (feeds).getJSONObject(0).getString("created_at");
-//                            String[] time = created_at.split("T");
-//                            Log.d("NET", time[1]);
                             String time = created_at.substring(11,19);
                             Log.d("NET", time);
                             tv1.setText("現在溫度: " + temp + "度");

@@ -5,4 +5,6 @@ package com.example.user.a20161124_project;
  */
 
 public class Thingspeak {
+    private String Channel;
+    private Feeds[] feeds;
 }
