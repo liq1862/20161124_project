@@ -25,8 +25,8 @@ public class Humi extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        tv1 = (TextView) findViewById(R.id.textView1);
-        tv2 = (TextView) findViewById(R.id.textView2);
+        tv1 = (TextView) findViewById(R.id.textView6);
+        tv2 = (TextView) findViewById(R.id.textView9);
         wv1 = (WebView) findViewById(R.id.webView1);
 
         RequestQueue queue = Volley.newRequestQueue(Humi.this);
@@ -46,7 +46,7 @@ public class Humi extends AppCompatActivity {
                         //最後一筆資料
                         Log.d("Time " , data.getFeeds()[(data.getFeeds().length)-1].getCreated_at());
                         Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
-                        tv1.setText("現在濕度: " + temp );
+                        tv1.setText("現在濕度: " + temp);
                         tv2.setText("測量時間:" + time2);
 // ==================================================================================
                     }

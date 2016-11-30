@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         tv1 = (TextView) findViewById(R.id.textView);
-        tv2 = (TextView) findViewById(R.id.textView2);
+        tv2 = (TextView) findViewById(R.id.textView9);
         tv3 = (TextView) findViewById(R.id.textView3);
         btn1 =(Button) findViewById(R.id.button1);
         btn2 =(Button) findViewById(R.id.button2);
@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,Temp.class);
+//                Bundle bundle = new Bundle();
+////                bundle.putBundle("Temp",);
                 startActivity(intent);
             }
         });
