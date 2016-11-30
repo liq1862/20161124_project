@@ -7,4 +7,15 @@ package com.example.user.a20161124_project;
 public class Thingspeak {
     private String Channel;
     private Feeds[] feeds;
+
+    public void setFeeds(Feeds[] feeds)
+    {
+        this.feeds = feeds;
+    }
+
+    public Feeds[] getFeeds()
+    {
+        return feeds;
+    }
 }
+
