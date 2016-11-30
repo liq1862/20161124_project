@@ -1,11 +1,12 @@
 package com.example.user.a20161124_project;
 
-import android.os.StrictMode;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.webkit.WebChromeClient;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -15,17 +16,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
-
 public class MainActivity extends AppCompatActivity {
     String[] feeds;
     String[] thingspeak;
     TextView tv1;
     TextView tv2;
+    TextView tv3;
+    Button btn1;
+    Button btn2;
+    Button btn3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         WebView wv;
@@ -35,6 +34,32 @@ public class MainActivity extends AppCompatActivity {
 
         tv1 = (TextView) findViewById(R.id.textView);
         tv2 = (TextView) findViewById(R.id.textView2);
+        tv3 = (TextView) findViewById(R.id.textView3);
+        btn1 =(Button) findViewById(R.id.button1);
+        btn2 =(Button) findViewById(R.id.button2);
+        btn3 =(Button) findViewById(R.id.button3);
+
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,Temp.class);
+                startActivity(intent);
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,Temp.class);
+                startActivity(intent);
+            }
+        });
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,Temp.class);
+                startActivity(intent);
+            }
+        });
 
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         StringRequest request = new StringRequest("https://api.thingspeak.com/channels/176124/fields/1.json?results=1&api_key=9AK9G8B8BN9GKIK8&timezone=Asia/Taipei",
@@ -46,12 +71,15 @@ public class MainActivity extends AppCompatActivity {
     /*GSON格式讀取*/
                         Gson gson = new Gson();
                         Thingspeak data = gson.fromJson(response, Thingspeak.class);
-
-                        for(int i = 0 ; i < data.getFeeds().length ; i++)
-                        {
-                            Log.d("Time " , data.getFeeds()[i].getCreated_at());
-                            Log.d("Temp  " , data.getFeeds()[i].getfield1());
-                        }
+                        //讀取GSON需先建立其呼叫類別
+                        String temp = data.getFeeds()[(data.getFeeds().length)-1].getfield1();
+                        String time = data.getFeeds()[(data.getFeeds().length)-1].getCreated_at();
+                        //最後一筆資料
+                        Log.d("Time " , data.getFeeds()[(data.getFeeds().length)-1].getCreated_at());
+                        Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
+                        tv1.setText("現在溫度: " + temp + "度");
+                        tv2.setText("現在濕度: " + temp);
+                        tv3.setText("PM2.5: " + temp);
 // ==================================================================================
 
 // ==================================================================================
