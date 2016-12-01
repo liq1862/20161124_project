@@ -16,21 +16,21 @@ import com.google.gson.Gson;
 
 public class Humi extends AppCompatActivity {
 
-    TextView tv1;
-    TextView tv2;
-    WebView wv1;
+    TextView tv6;
+    TextView tv7;
+    WebView wv2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_humi);
 
-        tv1 = (TextView) findViewById(R.id.textView6);
-        tv2 = (TextView) findViewById(R.id.textView9);
-        wv1 = (WebView) findViewById(R.id.webView1);
+        tv6 = (TextView) findViewById(R.id.textView6);
+        tv7 = (TextView) findViewById(R.id.textView7);
+        wv2 = (WebView) findViewById(R.id.webView2);
 
         RequestQueue queue = Volley.newRequestQueue(Humi.this);
-        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/176124/fields/1.json?results=1&api_key=9AK9G8B8BN9GKIK8&timezone=Asia/Taipei",
+        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/176124/feeds.json?api_key=9AK9G8B8BN9GKIK8&results=1&timezone=Asia/Taipei",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -40,14 +40,15 @@ public class Humi extends AppCompatActivity {
                         Gson gson = new Gson();
                         Thingspeak data = gson.fromJson(response, Thingspeak.class);
                         //讀取GSON需先建立其呼叫類別
-                        String temp = data.getFeeds()[(data.getFeeds().length)-1].getfield1();
+                        String humi = data.getFeeds()[(data.getFeeds().length)-1].getfield2();
+                        Log.d("Humi  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield2());
                         String time = data.getFeeds()[(data.getFeeds().length)-1].getCreated_at();
                         String time2 = time.substring(11,19);
-                        //最後一筆資料
-                        Log.d("Time " , data.getFeeds()[(data.getFeeds().length)-1].getCreated_at());
-                        Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
-                        tv1.setText("現在濕度: " + temp);
-                        tv2.setText("測量時間:" + time2);
+ //最後一筆資料
+//                        Log.d("Time " , data.getFeeds()[(data.getFeeds().length)-1].getCreated_at());
+//                        Log.d("Humi  " , data.getFeeds()[(data.getFeeds().length)-1].getfield2());
+                        tv6.setText("現在濕度: " + humi);
+                        tv7.setText("測量時間:" + time2);
 // ==================================================================================
                     }
                 }, new Response.ErrorListener() {
@@ -67,10 +68,10 @@ public class Humi extends AppCompatActivity {
 //                .build();
 //        StrictMode.setVmPolicy(policy);
 //
-        wv1.setWebChromeClient(new WebChromeClient());
-        wv1.getSettings().setJavaScriptEnabled(true);
+        wv2.setWebChromeClient(new WebChromeClient());
+        wv2.getSettings().setJavaScriptEnabled(true);
 //        wv1.getSettings().setUseWideViewPort(true);      //可設定表格大小
 //        wv1.getSettings().setLoadWithOverviewMode(true); //可設定表格大小
-        wv1.loadUrl("https://thingspeak.com/channels/176124/charts/1?api_key=9AK9G8B8BN9GKIK8&bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Temperature&type=line&width=300&height=250");
+        wv2.loadUrl("https://thingspeak.com/channels/176124/charts/2?api_key=9AK9G8B8BN9GKIK8&bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Humidity&type=line&width=300&height=250");
     }
 }

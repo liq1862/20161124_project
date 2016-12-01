@@ -16,8 +16,8 @@ import com.google.gson.Gson;
 
 public class Temp extends AppCompatActivity {
 
-    TextView tv1;
-    TextView tv2;
+    TextView tv4;
+    TextView tv5;
     WebView wv1;
 
     @Override
@@ -25,12 +25,12 @@ public class Temp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        tv1 = (TextView) findViewById(R.id.textView4);
-        tv2 = (TextView) findViewById(R.id.textView9);
+        tv4 = (TextView) findViewById(R.id.textView4);
+        tv5 = (TextView) findViewById(R.id.textView5);
         wv1 = (WebView) findViewById(R.id.webView1);
 
         RequestQueue queue = Volley.newRequestQueue(Temp.this);
-        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/176124/fields/1.json?results=1&api_key=9AK9G8B8BN9GKIK8&timezone=Asia/Taipei",
+        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/176124/feeds.json?api_key=9AK9G8B8BN9GKIK8&results=1&timezone=Asia/Taipei",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -46,8 +46,8 @@ public class Temp extends AppCompatActivity {
                         //最後一筆資料
                         Log.d("Time " , data.getFeeds()[(data.getFeeds().length)-1].getCreated_at());
                         Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
-                        tv1.setText("現在溫度: " + temp + "度");
-                        tv2.setText("測量時間:" + time2);
+                        tv4.setText("現在溫度: " + temp + "度");
+                        tv5.setText("測量時間:" + time2);
 // ==================================================================================
                     }
                 }, new Response.ErrorListener() {

@@ -24,13 +24,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView9"
+            android:id="@+id/textView7"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
 
         <WebView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/webView1" />
+            android:id="@+id/webView2" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         tv1 = (TextView) findViewById(R.id.textView);
-        tv2 = (TextView) findViewById(R.id.textView9);
+        tv2 = (TextView) findViewById(R.id.textView2);
         tv3 = (TextView) findViewById(R.id.textView3);
         btn1 =(Button) findViewById(R.id.button1);
         btn2 =(Button) findViewById(R.id.button2);
@@ -43,28 +43,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,Temp.class);
-//                Bundle bundle = new Bundle();
-////                bundle.putBundle("Temp",);
                 startActivity(intent);
             }
         });
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,Temp.class);
-                startActivity(intent);
+                Intent intent1 = new Intent(MainActivity.this,Humi.class);
+                startActivity(intent1);
             }
         });
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,Temp.class);
-                startActivity(intent);
+                Intent intent2 = new Intent(MainActivity.this,PM_2_5.class);
+                startActivity(intent2);
             }
         });
 
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/176124/fields/1.json?results=1&api_key=9AK9G8B8BN9GKIK8&timezone=Asia/Taipei",
+        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/176124/feeds.json?api_key=9AK9G8B8BN9GKIK8&results=1&timezone=Asia/Taipei",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -74,14 +72,20 @@ public class MainActivity extends AppCompatActivity {
                         Gson gson = new Gson();
                         Thingspeak data = gson.fromJson(response, Thingspeak.class);
                         //讀取GSON需先建立其呼叫類別
+
                         String temp = data.getFeeds()[(data.getFeeds().length)-1].getfield1();
-                        String time = data.getFeeds()[(data.getFeeds().length)-1].getCreated_at();
-                        //最後一筆資料
-                        Log.d("Time " , data.getFeeds()[(data.getFeeds().length)-1].getCreated_at());
-                        Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
                         tv1.setText("現在溫度: " + temp + "度");
-                        tv2.setText("現在濕度: " + temp);
-                        tv3.setText("PM2.5: " + temp);
+//最後一筆資料
+//                        Log.d("Time " , data.getFeeds()[((data.getFeeds().length)-1)].getCreated_at());
+//                        Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
+
+                        String humi = data.getFeeds()[(data.getFeeds().length)-1].getfield2();
+                        tv2.setText("現在濕度: " + humi);
+//                        Log.d("Temp  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield2());
+
+                        String pm_2_5 = data.getFeeds()[(data.getFeeds().length)-1].getfield3();
+                        tv3.setText("PM2.5: " + pm_2_5);
+//                        Log.d("Temp  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield3());
 // ==================================================================================
 
 // ==================================================================================
@@ -112,26 +116,6 @@ public class MainActivity extends AppCompatActivity {
         queue.start();
 
 // =================================================================================
-    /*顯示圖表*/
-    //暫時關掉權限(僅可測試用)
-//        StrictMode.VmPolicy policy = new StrictMode.VmPolicy.Builder()
-//                .detectFileUriExposure()
-//                .build();
-//        StrictMode.setVmPolicy(policy);
-//
-//        wv = (WebView) findViewById(R.id.webView);
-//        wv.setWebChromeClient(new WebChromeClient());
-//        wv.getSettings().setJavaScriptEnabled(true);
-//        wv.getSettings().setUseWideViewPort(true);      //可設定表格大小
-//        wv.getSettings().setLoadWithOverviewMode(true); //可設定表格大小
-//        wv.loadUrl("https://thingspeak.com/channels/176124/charts/1?api_key=9AK9G8B8BN9GKIK8&bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Temperature&type=line&width=500");
-//
-//        wv2 = (WebView) findViewById(R.id.webView2);
-//        wv2.setWebChromeClient(new WebChromeClient());
-//        wv2.getSettings().setJavaScriptEnabled(true);
-//        wv2.getSettings().setUseWideViewPort(true);
-//        wv2.getSettings().setLoadWithOverviewMode(true);
-//        wv2.loadUrl("https://thingspeak.com/channels/176124/charts/1?api_key=9AK9G8B8BN9GKIK8&bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Temperature&type=line&width=500");
     }
 }
 

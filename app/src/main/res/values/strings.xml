@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">20161124_project</string>
+    <string name="now_temp">現在溫度</string>
+    <string name="now_humi">現在濕度</string>
+    <string name="now_pm2.5">現在濃度</string>
+    <string name="last_time">測量時間</string>
+
 </resources>
