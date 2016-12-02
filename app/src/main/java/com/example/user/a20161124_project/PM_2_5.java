@@ -16,8 +16,7 @@ import com.google.gson.Gson;
 
 public class PM_2_5 extends AppCompatActivity {
 
-    TextView tv8;
-    TextView tv9;
+    TextView pmview, timeview, averageview;
     WebView wv3;
 
     @Override
@@ -25,12 +24,13 @@ public class PM_2_5 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pm_2_5);
 
-        tv8 = (TextView) findViewById(R.id.textView8);
-        tv9 = (TextView) findViewById(R.id.textView9);
+        pmview = (TextView) findViewById(R.id.textView8);
+        timeview = (TextView) findViewById(R.id.textView9);
+        averageview = (TextView) findViewById(R.id.textView11);
         wv3 = (WebView) findViewById(R.id.webView3);
 
         RequestQueue queue = Volley.newRequestQueue(PM_2_5.this);
-        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/176124/feeds.json?api_key=9AK9G8B8BN9GKIK8&results=1&timezone=Asia/Taipei",
+        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/176124/fields/3.json?api_key=9AK9G8B8BN9GKIK8&results=10&timezone=Asia/Taipei",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -45,10 +45,17 @@ public class PM_2_5 extends AppCompatActivity {
                         Log.d("pm2.5  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield3());
                         String time2 = time.substring(11,19);
  //最後一筆資料
-//                        Log.d("Time " , data.getFeeds()[(data.getFeeds().length)-1].getCreated_at());
-//                        Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
-                        tv8.setText("PM2.5 :  " + pm_2_5);
-                        tv9.setText("測量時間:" + time2);
+                        pmview.setText("PM2.5 :  " + pm_2_5);
+                        timeview.setText("測量時間:" + time2);
+
+                        Double sum=0.0;
+                        for(int i=0 ; i<data.getFeeds().length ; i++) {
+                            String pm = data.getFeeds()[i].getfield3();
+                           sum += (Double.valueOf(pm));
+                        }
+                        Double avg = sum / 10.0 ;
+                        averageview.setText("平均濃度:" + avg.toString());
+                        Log.d("AVG: ",avg.toString());
 // ==================================================================================
                     }
                 }, new Response.ErrorListener() {
@@ -72,6 +79,6 @@ public class PM_2_5 extends AppCompatActivity {
         wv3.getSettings().setJavaScriptEnabled(true);
 //        wv1.getSettings().setUseWideViewPort(true);      //可設定表格大小
 //        wv1.getSettings().setLoadWithOverviewMode(true); //可設定表格大小
-        wv3.loadUrl("https://thingspeak.com/channels/176124/charts/3?api_key=9AK9G8B8BN9GKIK8&bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=GAS&type=line&width=300&height=250");
+        wv3.loadUrl("https://thingspeak.com/channels/176124/charts/3?api_key=9AK9G8B8BN9GKIK8&bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=10&title=GAS&type=line&width=300&height=250");
     }
 }

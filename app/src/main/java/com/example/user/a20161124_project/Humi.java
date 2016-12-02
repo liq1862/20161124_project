@@ -16,8 +16,7 @@ import com.google.gson.Gson;
 
 public class Humi extends AppCompatActivity {
 
-    TextView tv6;
-    TextView tv7;
+    TextView humiview, timeview, averageview;
     WebView wv2;
 
     @Override
@@ -25,12 +24,13 @@ public class Humi extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_humi);
 
-        tv6 = (TextView) findViewById(R.id.textView6);
-        tv7 = (TextView) findViewById(R.id.textView7);
+        humiview = (TextView) findViewById(R.id.textView6);
+        timeview = (TextView) findViewById(R.id.textView7);
+        averageview = (TextView) findViewById(R.id.textView12);
         wv2 = (WebView) findViewById(R.id.webView2);
 
         RequestQueue queue = Volley.newRequestQueue(Humi.this);
-        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/176124/feeds.json?api_key=9AK9G8B8BN9GKIK8&results=1&timezone=Asia/Taipei",
+        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/176124/fields/2.json?api_key=9AK9G8B8BN9GKIK8&results=10&timezone=Asia/Taipei",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -45,10 +45,17 @@ public class Humi extends AppCompatActivity {
                         String time = data.getFeeds()[(data.getFeeds().length)-1].getCreated_at();
                         String time2 = time.substring(11,19);
  //最後一筆資料
-//                        Log.d("Time " , data.getFeeds()[(data.getFeeds().length)-1].getCreated_at());
-//                        Log.d("Humi  " , data.getFeeds()[(data.getFeeds().length)-1].getfield2());
-                        tv6.setText("現在濕度: " + humi);
-                        tv7.setText("測量時間:" + time2);
+                        humiview.setText("現在濕度: " + humi);
+                        timeview.setText("測量時間:" + time2);
+
+                        Double sum=0.0;
+                        for(int i=0 ; i<data.getFeeds().length ; i++) {
+                            String humidity = data.getFeeds()[i].getfield2();
+                            sum += (Double.valueOf(humidity));
+                        }
+                        Double avg = sum / 10.0 ;
+                        averageview.setText("平均濕度:" + avg.toString());
+                        Log.d("AVG: ",avg.toString());
 // ==================================================================================
                     }
                 }, new Response.ErrorListener() {
@@ -72,6 +79,6 @@ public class Humi extends AppCompatActivity {
         wv2.getSettings().setJavaScriptEnabled(true);
 //        wv1.getSettings().setUseWideViewPort(true);      //可設定表格大小
 //        wv1.getSettings().setLoadWithOverviewMode(true); //可設定表格大小
-        wv2.loadUrl("https://thingspeak.com/channels/176124/charts/2?api_key=9AK9G8B8BN9GKIK8&bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=Humidity&type=line&width=300&height=250");
+        wv2.loadUrl("https://thingspeak.com/channels/176124/charts/2?api_key=9AK9G8B8BN9GKIK8&bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=10&title=Humidity&type=line&width=300&height=250");
     }
 }

@@ -33,6 +33,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/webView1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView10"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
     </LinearLayout>
 
 </RelativeLayout>
