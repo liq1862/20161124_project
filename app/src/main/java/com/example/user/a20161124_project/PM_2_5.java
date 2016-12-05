@@ -30,7 +30,7 @@ public class PM_2_5 extends AppCompatActivity {
         wv3 = (WebView) findViewById(R.id.webView3);
 
         RequestQueue queue = Volley.newRequestQueue(PM_2_5.this);
-        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/176124/fields/3.json?api_key=9AK9G8B8BN9GKIK8&results=10&timezone=Asia/Taipei",
+        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/3.json?results=10",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -79,6 +79,6 @@ public class PM_2_5 extends AppCompatActivity {
         wv3.getSettings().setJavaScriptEnabled(true);
 //        wv1.getSettings().setUseWideViewPort(true);      //可設定表格大小
 //        wv1.getSettings().setLoadWithOverviewMode(true); //可設定表格大小
-        wv3.loadUrl("https://thingspeak.com/channels/176124/charts/3?api_key=9AK9G8B8BN9GKIK8&bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=10&title=GAS&type=line&width=300&height=250");
+        wv3.loadUrl("https://thingspeak.com/channels/189185/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=10&title=PM2.5&type=line&width=300&height=250");
     }
 }

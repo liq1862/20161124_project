@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-                StringRequest request = new StringRequest("https://api.thingspeak.com/channels/176124/feeds.json?api_key=9AK9G8B8BN9GKIK8&results=1&timezone=Asia/Taipei",
+                StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/feeds.json?results=1",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 //  ================================================================================
 /*Volley*/
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/176124/feeds.json?api_key=9AK9G8B8BN9GKIK8&results=1&timezone=Asia/Taipei",
+        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/feeds.json?results=1",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -99,17 +99,18 @@ public class MainActivity extends AppCompatActivity {
 
                         String temp = data.getFeeds()[(data.getFeeds().length)-1].getfield1();
                         tempview.setText("現在溫度: " + temp + "度");
+//                        Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
 //最後一筆資料
 //                        Log.d("Time " , data.getFeeds()[((data.getFeeds().length)-1)].getCreated_at());
 //                        Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
 
                         String humi = data.getFeeds()[(data.getFeeds().length)-1].getfield2();
                         humiview.setText("現在濕度: " + humi);
-//                        Log.d("Temp  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield2());
+//                        Log.d("Humi  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield2());
 
                         String pm_2_5 = data.getFeeds()[(data.getFeeds().length)-1].getfield3();
                         pmview.setText("PM2.5: " + pm_2_5);
-//                        Log.d("Temp  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield3());
+//                        Log.d("PM2.5  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield3());
 // ==================================================================================
 
 
