@@ -25,14 +25,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        findViews();
 
-        tempview = (TextView) findViewById(R.id.textView);
-        humiview = (TextView) findViewById(R.id.textView2);
-        pmview = (TextView) findViewById(R.id.textView3);
-        totemp =(Button) findViewById(R.id.button1);
-        tohumi =(Button) findViewById(R.id.button2);
-        topm =(Button) findViewById(R.id.button3);
-        torefresh =(Button) findViewById(R.id.button4);
+
 //  =========================================================================
 /*Button設定*/
         totemp.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +137,16 @@ public class MainActivity extends AppCompatActivity {
         queue.start();
 
 // =================================================================================
+    }
+
+    protected void findViews(){
+        tempview = (TextView) findViewById(R.id.textView);
+        humiview = (TextView) findViewById(R.id.textView2);
+        pmview = (TextView) findViewById(R.id.textView3);
+        totemp =(Button) findViewById(R.id.button1);
+        tohumi =(Button) findViewById(R.id.button2);
+        topm =(Button) findViewById(R.id.button3);
+        torefresh =(Button) findViewById(R.id.button4);
     }
 }
 
