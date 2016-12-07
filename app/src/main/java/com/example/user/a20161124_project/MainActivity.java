@@ -1,6 +1,8 @@
 package com.example.user.a20161124_project;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,18 +18,21 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+
 public class MainActivity extends AppCompatActivity {
     String[] feeds;
     String[] thingspeak;
     TextView tempview,humiview,pmview;
     Button totemp,tohumi,topm,torefresh;
+    private static final int msgKey1 = 111;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViews();
-
-
+        setTitle("綜合資訊");
+        new TimeThread().start();
 //  =========================================================================
 /*Button設定*/
         totemp.setOnClickListener(new View.OnClickListener() {
@@ -80,37 +85,37 @@ public class MainActivity extends AppCompatActivity {
         });
 //  ================================================================================
 /*Volley*/
-        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/feeds.json?results=1",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
+//        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+//        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/feeds.json?results=1",
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//
 // =================================================================================
-    /*GSON格式讀取*/
-                        Gson gson = new Gson();
-                        Thingspeak data = gson.fromJson(response, Thingspeak.class);
-                        //讀取GSON需先建立其呼叫類別
-
-                        String temp = data.getFeeds()[(data.getFeeds().length)-1].getfield1();
-                        tempview.setText("現在溫度: " + temp + "度");
+//    /*GSON格式讀取*/
+//                        Gson gson = new Gson();
+//                        Thingspeak data = gson.fromJson(response, Thingspeak.class);
+//                        //讀取GSON需先建立其呼叫類別
+//
+//                        String temp = data.getFeeds()[(data.getFeeds().length)-1].getfield1();
+//                        tempview.setText("現在溫度: " + temp + "度");
 //                        Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
 //最後一筆資料
 //                        Log.d("Time " , data.getFeeds()[((data.getFeeds().length)-1)].getCreated_at());
 //                        Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
-
-                        String humi = data.getFeeds()[(data.getFeeds().length)-1].getfield2();
-                        humiview.setText("現在濕度: " + humi);
+//
+//                        String humi = data.getFeeds()[(data.getFeeds().length)-1].getfield2();
+//                        humiview.setText("現在濕度: " + humi);
 //                        Log.d("Humi  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield2());
-
-                        String pm_2_5 = data.getFeeds()[(data.getFeeds().length)-1].getfield3();
-                        pmview.setText("PM2.5: " + pm_2_5);
+//
+//                        String pm_2_5 = data.getFeeds()[(data.getFeeds().length)-1].getfield3();
+//                        pmview.setText("PM2.5: " + pm_2_5);
 //                        Log.d("PM2.5  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield3());
 // ==================================================================================
-
-
-// ==================================================================================
-    /*JSON格式讀取*/
+//
+//
+//==================================================================================
+//    /*JSON格式讀取*/
 //                        Log.d("NET", response);
 //                        try {
 //                            String feeds = new JSONObject(response).getString("feeds");
@@ -126,15 +131,15 @@ public class MainActivity extends AppCompatActivity {
 //                            e.printStackTrace();
 //                        }
 //  ================================================================================
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        queue.add(request);
-        queue.start();
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//
+//            }
+//        });
+//        queue.add(request);
+//        queue.start();
 
 // =================================================================================
     }
@@ -148,5 +153,60 @@ public class MainActivity extends AppCompatActivity {
         topm =(Button) findViewById(R.id.button3);
         torefresh =(Button) findViewById(R.id.button4);
     }
+    public class TimeThread extends Thread {
+        @Override
+        public void run () {
+            do{
+                try {
+                    Thread.sleep(1000);
+                    Log.d("TIME","SHOW");
+                    Message msg = new Message();
+                    msg.what = msgKey1;
+                    mHandler.sendMessage(msg);
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }while(true);
+        }
+    }
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage (Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == msgKey1)
+            {
+                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/feeds.json?results=1",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Gson gson = new Gson();
+                                Thingspeak data = gson.fromJson(response, Thingspeak.class);
+
+                                String temp = data.getFeeds()[(data.getFeeds().length)-1].getfield1();
+                                tempview.setText("現在溫度: " + temp + "度");
+//                                Log.d("TEST","set");
+//                        Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
+
+                                String humi = data.getFeeds()[(data.getFeeds().length)-1].getfield2();
+                                humiview.setText("現在濕度: " + humi);
+//                        Log.d("Humi  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield2());
+
+                                String pm_2_5 = data.getFeeds()[(data.getFeeds().length)-1].getfield3();
+                                pmview.setText("PM2.5: " + pm_2_5);
+//                        Log.d("PM2.5  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield3());
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                });
+                queue.add(request);
+                queue.start();
+            }
+        }
+    };
 }
+
 
