@@ -2,6 +2,7 @@ package com.example.user.a20161124_project;
 
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.RequiresPermission;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,51 +27,12 @@ public class Temp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        findView();
         setTitle("溫度詳細資料");
+
+        ReadTemp();
+
         new TimeThread2().start();
-
-        tempview = (TextView) findViewById(R.id.textView4);
-        timeview = (TextView) findViewById(R.id.textView5);
-        averageview = (TextView) findViewById(R.id.textView10);
-        wv1 = (WebView) findViewById(R.id.webView1);
-
-        RequestQueue queue = Volley.newRequestQueue(Temp.this);
-        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/1.json?results=10",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-// =================================================================================
-    /*GSON格式讀取*/
-                        Gson gson = new Gson();
-                        Thingspeak data = gson.fromJson(response, Thingspeak.class);
-//讀取GSON需先建立其呼叫類別
-                        String temp = data.getFeeds()[(data.getFeeds().length)-1].getfield1();
-                        String time = data.getFeeds()[(data.getFeeds().length)-1].getCreated_at();
-//                        Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
-                        String time2 = time.substring(11,19);
-//                        //最後一筆資料
-                        tempview.setText("現在溫度: " + temp + "度");
-                        timeview.setText("測量時間:" + time2);
-//                        //計算平均
-                        Double sum=0.0;
-                        for(int i=0 ; i<data.getFeeds().length ; i++) {
-                            String temputer = data.getFeeds()[i].getfield1();
-                            sum += (Double.valueOf(temputer));
-                        }
-                        Double avg = sum / 10.0 ;
-                        averageview.setText("平均溫度:" + avg.toString());
-                        Log.d("AVG: ",avg.toString());
-// ==================================================================================
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        queue.add(request);
-        queue.start();
 
 // =================================================================================
     /*顯示圖表*/
@@ -108,38 +70,50 @@ public class Temp extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == msgKey2) {
-                RequestQueue queue = Volley.newRequestQueue(Temp.this);
-                StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/1.json?results=10",
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                Gson gson = new Gson();
-                                Thingspeak data = gson.fromJson(response, Thingspeak.class);
-                                String temp = data.getFeeds()[(data.getFeeds().length) - 1].getfield1();
-                                String time = data.getFeeds()[(data.getFeeds().length) - 1].getCreated_at();
-//                                Log.d("Temp  ", data.getFeeds()[(data.getFeeds().length) - 1].getfield1());
-                                String time2 = time.substring(11, 19);
-                                tempview.setText("現在溫度: " + temp + "度");
-                                timeview.setText("測量時間:" + time2);
-                                Log.d("TEST","set t");
-                                Double sum = 0.0;
-                                for (int i = 0; i < data.getFeeds().length; i++) {
-                                    String temputer = data.getFeeds()[i].getfield1();
-                                    sum += (Double.valueOf(temputer));
-                                }
-                                Double avg = sum / 10.0;
-                                averageview.setText("平均溫度:" + avg.toString());
-//                                Log.d("AVG: ", avg.toString());
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-                queue.add(request);
-                queue.start();
+                ReadTemp();
+                Log.d("NEW","Temp");
             }
         }
     };
+    public void ReadTemp(){
+        RequestQueue queue = Volley.newRequestQueue(Temp.this);
+        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/1.json?results=10",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        Gson gson = new Gson();
+                        Thingspeak data = gson.fromJson(response, Thingspeak.class);
+                        String temp = data.getFeeds()[(data.getFeeds().length)-1].getfield1();
+                        String time = data.getFeeds()[(data.getFeeds().length)-1].getCreated_at();
+//                        Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
+                        String time2 = time.substring(11,19);
+//                        //最後一筆資料
+                        tempview.setText("現在溫度: " + temp + "度");
+                        timeview.setText("測量時間:" + time2);
+//                        //計算平均
+                        Double sum=0.0;
+                        for(int i=0 ; i<data.getFeeds().length ; i++) {
+                            String temputer = data.getFeeds()[i].getfield1();
+                            sum += (Double.valueOf(temputer));
+                        }
+                        Double avg = sum / 10.0 ;
+                        averageview.setText("平均溫度:" + avg.toString());
+//                        Log.d("AVG: ",avg.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        queue.add(request);
+        queue.start();
+    }
+    protected void findView(){
+        tempview = (TextView) findViewById(R.id.textView4);
+        timeview = (TextView) findViewById(R.id.textView5);
+        averageview = (TextView) findViewById(R.id.textView10);
+        wv1 = (WebView) findViewById(R.id.webView1);
+    }
 }

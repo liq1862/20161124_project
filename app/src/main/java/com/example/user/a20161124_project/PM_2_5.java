@@ -27,50 +27,11 @@ public class PM_2_5 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pm_2_5);
         setTitle("PM2.5詳細資料");
+        findView();
+
+        ReadPM();
+
         new TimeThread3().start();
-
-        pmview = (TextView) findViewById(R.id.textView8);
-        timeview = (TextView) findViewById(R.id.textView9);
-        averageview = (TextView) findViewById(R.id.textView11);
-        wv3 = (WebView) findViewById(R.id.webView3);
-
-        RequestQueue queue = Volley.newRequestQueue(PM_2_5.this);
-        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/3.json?results=10",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-// =================================================================================
-    /*GSON格式讀取*/
-                        Gson gson = new Gson();
-                        Thingspeak data = gson.fromJson(response, Thingspeak.class);
-//                        //讀取GSON需先建立其呼叫類別
-                        String pm_2_5 = data.getFeeds()[(data.getFeeds().length)-1].getfield3();
-                        String time = data.getFeeds()[(data.getFeeds().length)-1].getCreated_at();
-//                        Log.d("pm2.5  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield3());
-                        String time2 = time.substring(11,19);
- //最後一筆資料
-                        pmview.setText("PM2.5 :  " + pm_2_5);
-                        timeview.setText("測量時間:" + time2);
-
-                        Double sum=0.0;
-                        for(int i=0 ; i<data.getFeeds().length ; i++) {
-                            String pm = data.getFeeds()[i].getfield3();
-                           sum += (Double.valueOf(pm));
-                        }
-                        Double avg = sum / 10.0 ;
-                        averageview.setText("平均濃度:" + avg.toString());
-                        Log.d("AVG: ",avg.toString());
-// ==================================================================================
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        queue.add(request);
-        queue.start();
 
 // =================================================================================
     /*顯示圖表*/
@@ -107,40 +68,51 @@ public class PM_2_5 extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == msgKey3) {
-                RequestQueue queue = Volley.newRequestQueue(PM_2_5.this);
-                StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/3.json?results=10",
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                Gson gson = new Gson();
-                                Thingspeak data = gson.fromJson(response, Thingspeak.class);
-                                String pm_2_5 = data.getFeeds()[(data.getFeeds().length)-1].getfield3();
-                                String time = data.getFeeds()[(data.getFeeds().length)-1].getCreated_at();
-//                                Log.d("pm2.5  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield3());
-                                String time2 = time.substring(11,19);
-                                pmview.setText("PM2.5 :  " + pm_2_5);
-                                timeview.setText("測量時間:" + time2);
-//                                Log.d("TEST","set p");
-
-                                Double sum=0.0;
-                                for(int i=0 ; i<data.getFeeds().length ; i++) {
-                                    String pm = data.getFeeds()[i].getfield3();
-                                    sum += (Double.valueOf(pm));
-                                }
-                                Double avg = sum / 10.0 ;
-                                averageview.setText("平均濃度:" + avg.toString());
-//                                Log.d("AVG: ",avg.toString());
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-                queue.add(request);
-                queue.start();
+                ReadPM();
+                Log.d("NEW","Pm2.5");
             }
         }
     };
+
+    public void ReadPM(){
+        RequestQueue queue = Volley.newRequestQueue(PM_2_5.this);
+        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/3.json?results=10",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
+                        Thingspeak data = gson.fromJson(response, Thingspeak.class);
+                        String pm_2_5 = data.getFeeds()[(data.getFeeds().length)-1].getfield3();
+                        String time = data.getFeeds()[(data.getFeeds().length)-1].getCreated_at();
+//                        Log.d("pm2.5  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield3());
+                        String time2 = time.substring(11,19);
+                        //最後一筆資料
+                        pmview.setText("PM2.5 :  " + pm_2_5);
+                        timeview.setText("測量時間:" + time2);
+
+                        Double sum=0.0;
+                        for(int i=0 ; i<data.getFeeds().length ; i++) {
+                            String pm = data.getFeeds()[i].getfield3();
+                            sum += (Double.valueOf(pm));
+                        }
+                        Double avg = sum / 10.0 ;
+                        averageview.setText("平均濃度:" + avg.toString());
+//                        Log.d("AVG: ",avg.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        queue.add(request);
+        queue.start();
+    }
+    protected void findView(){
+        pmview = (TextView) findViewById(R.id.textView8);
+        timeview = (TextView) findViewById(R.id.textView9);
+        averageview = (TextView) findViewById(R.id.textView11);
+        wv3 = (WebView) findViewById(R.id.webView3);
+    }
 }
 

@@ -25,57 +25,16 @@ public class Humi extends AppCompatActivity {
     WebView wv2;
     private static final int msgKey4 = 111;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_humi);
+        findView();
         setTitle("濕度詳細資料");
+
+        ReadHumi();
+
         new TimeThread4().start();
-
-        humiview = (TextView) findViewById(R.id.textView6);
-        timeview = (TextView) findViewById(R.id.textView7);
-        averageview = (TextView) findViewById(R.id.textView12);
-        wv2 = (WebView) findViewById(R.id.webView2);
-
-        RequestQueue queue = Volley.newRequestQueue(Humi.this);
-        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/2.json?results=10",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-// =================================================================================
- /*GSON格式讀取*/
-                        Gson gson = new Gson();
-                        Thingspeak data = gson.fromJson(response, Thingspeak.class);
-//讀取GSON需先建立其呼叫類別
-                        String humi = data.getFeeds()[(data.getFeeds().length)-1].getfield2();
-//                        Log.d("Humi  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield2());
-                        String time = data.getFeeds()[(data.getFeeds().length)-1].getCreated_at();
-                        String time2 = time.substring(11,19);
- //最後一筆資料
-                        humiview.setText("現在濕度: " + humi);
-                        timeview.setText("測量時間:" + time2);
-
-                        Double sum=0.0;
-                        for(int i=0 ; i<data.getFeeds().length ; i++) {
-                            String humidity = data.getFeeds()[i].getfield2();
-                            sum += (Double.valueOf(humidity));
-                        }
-                        Double avg = sum / 10.0 ;
-                        averageview.setText("平均濕度:" + avg.toString());
-                        Log.d("AVG: ",avg.toString());
-// ==================================================================================
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        queue.add(request);
-        queue.start();
 
 // =================================================================================
     /*顯示圖表*/
@@ -113,47 +72,49 @@ public class Humi extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == msgKey4) {
-                RequestQueue queue = Volley.newRequestQueue(Humi.this);
-                StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/2.json?results=10",
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-
-                                Gson gson = new Gson();
-                                Thingspeak data = gson.fromJson(response, Thingspeak.class);
-                                String humi = data.getFeeds()[(data.getFeeds().length)-1].getfield2();
-//                                Log.d("Humi  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield2());
-                                String time = data.getFeeds()[(data.getFeeds().length)-1].getCreated_at();
-                                String time2 = time.substring(11,19);
-                                humiview.setText("現在濕度: " + humi);
-                                timeview.setText("測量時間:" + time2);
-                                Log.d("TEST","set h");
-
-                                Double sum=0.0;
-                                for(int i=0 ; i<data.getFeeds().length ; i++) {
-                                    String humidity = data.getFeeds()[i].getfield2();
-                                    sum += (Double.valueOf(humidity));
-                                }
-                                Double avg = sum / 10.0 ;
-                                averageview.setText("平均濕度:" + avg.toString());
-//                                Log.d("AVG: ",avg.toString());
-// ==================================================================================
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-                queue.add(request);
-                queue.start();
+                ReadHumi();
+                Log.d("NEW","Humi");
             }
         }
     };
+    protected void findView(){
+        humiview = (TextView) findViewById(R.id.textView6);
+        timeview = (TextView) findViewById(R.id.textView7);
+        averageview = (TextView) findViewById(R.id.textView12);
+        wv2 = (WebView) findViewById(R.id.webView2);
+    }
+    public void ReadHumi(){
+        RequestQueue queue = Volley.newRequestQueue(Humi.this);
+        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/2.json?results=10",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
+                        Thingspeak data = gson.fromJson(response, Thingspeak.class);
+                        String humi = data.getFeeds()[(data.getFeeds().length)-1].getfield2();
+//                        Log.d("Humi  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield2());
+                        String time = data.getFeeds()[(data.getFeeds().length)-1].getCreated_at();
+                        String time2 = time.substring(11,19);
+                        //最後一筆資料
+                        humiview.setText("現在濕度: " + humi);
+                        timeview.setText("測量時間:" + time2);
 
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//
-//    }
+                        Double sum=0.0;
+                        for(int i=0 ; i<data.getFeeds().length ; i++) {
+                            String humidity = data.getFeeds()[i].getfield2();
+                            sum += (Double.valueOf(humidity));
+                        }
+                        Double avg = sum / 10.0 ;
+                        averageview.setText("平均濕度:" + avg.toString());
+//                        Log.d("AVG: ",avg.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        queue.add(request);
+        queue.start();
+    }
 }
