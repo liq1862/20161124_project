@@ -23,6 +23,7 @@ public class Temp extends AppCompatActivity {
     WebView wv1;
     private static final int msgKey2 = 112;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,14 +51,15 @@ public class Temp extends AppCompatActivity {
 //  ===================================================================================
     }
     public class TimeThread2 extends Thread {
+
         @Override
         public void run () {
             do{
                 try {
                     Thread.sleep(60000);
-                    Message msg = new Message();
-                    msg.what = msgKey2;
-                    mHandler.sendMessage(msg);
+                    Message msg2 = new Message();
+                    msg2.what = msgKey2;
+                    mHandler.sendMessage(msg2);
                 }
                 catch (InterruptedException e) {
                     e.printStackTrace();
@@ -67,9 +69,9 @@ public class Temp extends AppCompatActivity {
     }
     private Handler mHandler = new Handler() {
         @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == msgKey2) {
+        public void handleMessage(Message msg2) {
+            super.handleMessage(msg2);
+            if (msg2.what == msgKey2) {
                 ReadTemp();
                 Log.d("NEW","Temp");
             }

@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tempview,humiview,pmview;
     Button totemp,tohumi,topm,torefresh;
     private static final int msgKey1 = 111;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,14 +80,15 @@ public class MainActivity extends AppCompatActivity {
         torefresh =(Button) findViewById(R.id.button4);
     }
     public class TimeThread1 extends Thread {
+
         @Override
         public void run () {
             do{
                 try {
+                    Message msg1 = new Message();
                     Thread.sleep(60000);
-                    Message msg = new Message();
-                    msg.what = msgKey1;
-                    mHandler.sendMessage(msg);
+                    msg1.what = msgKey1;
+                    mHandler.sendMessage(msg1);
                 }
                 catch (InterruptedException e) {
                     e.printStackTrace();
@@ -96,9 +98,9 @@ public class MainActivity extends AppCompatActivity {
     }
     private Handler mHandler = new Handler() {
         @Override
-        public void handleMessage (Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == msgKey1)
+        public void handleMessage (Message msg1) {
+            super.handleMessage(msg1);
+            if (msg1.what == msgKey1)
             {
                 ReadData();
                 Log.d("NEW","Main");

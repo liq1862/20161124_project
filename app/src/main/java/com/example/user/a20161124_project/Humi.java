@@ -23,7 +23,8 @@ public class Humi extends AppCompatActivity {
 
     TextView humiview, timeview, averageview;
     WebView wv2;
-    private static final int msgKey4 = 111;
+    private static final int msgKey3 = 111;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +53,15 @@ public class Humi extends AppCompatActivity {
 
     }
     public class TimeThread4 extends Thread {
+
         @Override
         public void run () {
             do{
                 try {
                     Thread.sleep(60000);
-                    Message msg = new Message();
-                    msg.what = msgKey4;
-                    mHandler.sendMessage(msg);
+                    Message msg3 = new Message();
+                    msg3.what = msgKey3;
+                    mHandler.sendMessage(msg3);
                 }
                 catch (InterruptedException e) {
                     e.printStackTrace();
@@ -69,9 +71,9 @@ public class Humi extends AppCompatActivity {
     }
     private Handler mHandler = new Handler() {
         @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == msgKey4) {
+        public void handleMessage(Message msg3) {
+            super.handleMessage(msg3);
+            if (msg3.what == msgKey3) {
                 ReadHumi();
                 Log.d("NEW","Humi");
             }

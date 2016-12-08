@@ -20,7 +20,8 @@ public class PM_2_5 extends AppCompatActivity {
 
     TextView pmview, timeview, averageview;
     WebView wv3;
-    private static final int msgKey3 = 111;
+    private static final int msgKey4 = 111;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +49,15 @@ public class PM_2_5 extends AppCompatActivity {
         wv3.loadUrl("https://thingspeak.com/channels/189185/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=10&title=PM2.5&type=line&width=300&height=250");
     }
     public class TimeThread3 extends Thread {
+
         @Override
         public void run () {
             do{
                 try {
                     Thread.sleep(60000);
-                    Message msg = new Message();
-                    msg.what = msgKey3;
-                    mHandler.sendMessage(msg);
+                    Message msg4 = new Message();
+                    msg4.what = msgKey4;
+                    mHandler.sendMessage(msg4);
                 }
                 catch (InterruptedException e) {
                     e.printStackTrace();
@@ -65,9 +67,9 @@ public class PM_2_5 extends AppCompatActivity {
     }
     private Handler mHandler = new Handler() {
         @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == msgKey3) {
+        public void handleMessage(Message msg4) {
+            super.handleMessage(msg4);
+            if (msg4.what == msgKey4) {
                 ReadPM();
                 Log.d("NEW","Pm2.5");
             }
