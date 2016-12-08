@@ -39,43 +39,43 @@ public class Humi extends AppCompatActivity {
         averageview = (TextView) findViewById(R.id.textView12);
         wv2 = (WebView) findViewById(R.id.webView2);
 
-//        RequestQueue queue = Volley.newRequestQueue(Humi.this);
-//        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/2.json?results=10",
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
+        RequestQueue queue = Volley.newRequestQueue(Humi.this);
+        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/2.json?results=10",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
 
 // =================================================================================
-    /*GSON格式讀取*/
-//                        Gson gson = new Gson();
-//                        Thingspeak data = gson.fromJson(response, Thingspeak.class);
-//                        //讀取GSON需先建立其呼叫類別
-//                        String humi = data.getFeeds()[(data.getFeeds().length)-1].getfield2();
+ /*GSON格式讀取*/
+                        Gson gson = new Gson();
+                        Thingspeak data = gson.fromJson(response, Thingspeak.class);
+//讀取GSON需先建立其呼叫類別
+                        String humi = data.getFeeds()[(data.getFeeds().length)-1].getfield2();
 //                        Log.d("Humi  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield2());
-//                        String time = data.getFeeds()[(data.getFeeds().length)-1].getCreated_at();
-//                        String time2 = time.substring(11,19);
+                        String time = data.getFeeds()[(data.getFeeds().length)-1].getCreated_at();
+                        String time2 = time.substring(11,19);
  //最後一筆資料
-//                        humiview.setText("現在濕度: " + humi);
-//                        timeview.setText("測量時間:" + time2);
-//
-//                        Double sum=0.0;
-//                        for(int i=0 ; i<data.getFeeds().length ; i++) {
-//                            String humidity = data.getFeeds()[i].getfield2();
-//                            sum += (Double.valueOf(humidity));
-//                        }
-//                        Double avg = sum / 10.0 ;
-//                        averageview.setText("平均濕度:" + avg.toString());
-//                        Log.d("AVG: ",avg.toString());
+                        humiview.setText("現在濕度: " + humi);
+                        timeview.setText("測量時間:" + time2);
+
+                        Double sum=0.0;
+                        for(int i=0 ; i<data.getFeeds().length ; i++) {
+                            String humidity = data.getFeeds()[i].getfield2();
+                            sum += (Double.valueOf(humidity));
+                        }
+                        Double avg = sum / 10.0 ;
+                        averageview.setText("平均濕度:" + avg.toString());
+                        Log.d("AVG: ",avg.toString());
 // ==================================================================================
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//
-//            }
-//        });
-//        queue.add(request);
-//        queue.start();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        queue.add(request);
+        queue.start();
 
 // =================================================================================
     /*顯示圖表*/
@@ -97,7 +97,7 @@ public class Humi extends AppCompatActivity {
         public void run () {
             do{
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(60000);
                     Message msg = new Message();
                     msg.what = msgKey4;
                     mHandler.sendMessage(msg);

@@ -85,31 +85,31 @@ public class MainActivity extends AppCompatActivity {
         });
 //  ================================================================================
 /*Volley*/
-//        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-//        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/feeds.json?results=1",
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/feeds.json?results=1",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
 //
 // =================================================================================
 //    /*GSON格式讀取*/
-//                        Gson gson = new Gson();
-//                        Thingspeak data = gson.fromJson(response, Thingspeak.class);
-//                        //讀取GSON需先建立其呼叫類別
-//
-//                        String temp = data.getFeeds()[(data.getFeeds().length)-1].getfield1();
-//                        tempview.setText("現在溫度: " + temp + "度");
+                        Gson gson = new Gson();
+                        Thingspeak data = gson.fromJson(response, Thingspeak.class);
+                        //讀取GSON需先建立其呼叫類別
+
+                        String temp = data.getFeeds()[(data.getFeeds().length)-1].getfield1();
+                        tempview.setText("現在溫度: " + temp + "度");
 //                        Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
 //最後一筆資料
 //                        Log.d("Time " , data.getFeeds()[((data.getFeeds().length)-1)].getCreated_at());
 //                        Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
-//
-//                        String humi = data.getFeeds()[(data.getFeeds().length)-1].getfield2();
-//                        humiview.setText("現在濕度: " + humi);
+
+                        String humi = data.getFeeds()[(data.getFeeds().length)-1].getfield2();
+                        humiview.setText("現在濕度: " + humi);
 //                        Log.d("Humi  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield2());
-//
-//                        String pm_2_5 = data.getFeeds()[(data.getFeeds().length)-1].getfield3();
-//                        pmview.setText("PM2.5: " + pm_2_5);
+
+                        String pm_2_5 = data.getFeeds()[(data.getFeeds().length)-1].getfield3();
+                        pmview.setText("PM2.5: " + pm_2_5);
 //                        Log.d("PM2.5  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield3());
 // ==================================================================================
 //
@@ -131,15 +131,15 @@ public class MainActivity extends AppCompatActivity {
 //                            e.printStackTrace();
 //                        }
 //  ================================================================================
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//
-//            }
-//        });
-//        queue.add(request);
-//        queue.start();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        queue.add(request);
+        queue.start();
 
 // =================================================================================
     }
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
         public void run () {
             do{
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(60000);
                     Message msg = new Message();
                     msg.what = msgKey1;
                     mHandler.sendMessage(msg);
