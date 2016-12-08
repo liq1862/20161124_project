@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         findViews();
         setTitle("綜合資訊");
-        new TimeThread().start();
+        new TimeThread1().start();
 //  =========================================================================
 /*Button設定*/
         totemp.setOnClickListener(new View.OnClickListener() {
@@ -153,13 +153,12 @@ public class MainActivity extends AppCompatActivity {
         topm =(Button) findViewById(R.id.button3);
         torefresh =(Button) findViewById(R.id.button4);
     }
-    public class TimeThread extends Thread {
+    public class TimeThread1 extends Thread {
         @Override
         public void run () {
             do{
                 try {
                     Thread.sleep(1000);
-                    Log.d("TIME","SHOW");
                     Message msg = new Message();
                     msg.what = msgKey1;
                     mHandler.sendMessage(msg);
@@ -186,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 String temp = data.getFeeds()[(data.getFeeds().length)-1].getfield1();
                                 tempview.setText("現在溫度: " + temp + "度");
-//                                Log.d("TEST","set");
+//                               Log.d("TEST","set");
 //                        Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
 
                                 String humi = data.getFeeds()[(data.getFeeds().length)-1].getfield2();

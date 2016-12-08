@@ -92,7 +92,6 @@ public class PM_2_5 extends AppCompatActivity {
             do{
                 try {
                     Thread.sleep(1000);
-                    Log.d("TIME","SHOW");
                     Message msg = new Message();
                     msg.what = msgKey3;
                     mHandler.sendMessage(msg);

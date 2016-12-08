@@ -93,7 +93,6 @@ public class Temp extends AppCompatActivity {
             do{
                 try {
                     Thread.sleep(1000);
-                    Log.d("TIME","SHOW");
                     Message msg = new Message();
                     msg.what = msgKey2;
                     mHandler.sendMessage(msg);

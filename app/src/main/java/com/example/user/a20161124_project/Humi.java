@@ -90,6 +90,7 @@ public class Humi extends AppCompatActivity {
 //        wv1.getSettings().setUseWideViewPort(true);      //可設定表格大小
 //        wv1.getSettings().setLoadWithOverviewMode(true); //可設定表格大小
         wv2.loadUrl("https://thingspeak.com/channels/189185/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=10&title=Humidity&type=line&width=300&height=250");
+
     }
     public class TimeThread4 extends Thread {
         @Override
@@ -97,7 +98,6 @@ public class Humi extends AppCompatActivity {
             do{
                 try {
                     Thread.sleep(1000);
-                    Log.d("TIME","SHOW");
                     Message msg = new Message();
                     msg.what = msgKey4;
                     mHandler.sendMessage(msg);
@@ -150,4 +150,10 @@ public class Humi extends AppCompatActivity {
             }
         }
     };
+
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//
+//    }
 }
