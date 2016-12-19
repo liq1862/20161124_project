@@ -24,6 +24,7 @@ public class Humi extends AppCompatActivity {
     TextView humiview, timeview, averageview;
     WebView wv2;
     private static final int msgKey3 = 111;
+    Handler handler = new Handler();
 
 
     @Override
@@ -35,7 +36,7 @@ public class Humi extends AppCompatActivity {
 
         ReadHumi();
 
-        new TimeThread4().start();
+        handler.post(humiinfo);
 
 // =================================================================================
     /*顯示圖表*/
@@ -52,33 +53,20 @@ public class Humi extends AppCompatActivity {
         wv2.loadUrl("https://thingspeak.com/channels/189185/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=10&title=Humidity&type=line&width=300&height=250");
 
     }
-    public class TimeThread4 extends Thread {
-
+    Runnable humiinfo = new Runnable() {
         @Override
-        public void run () {
-            do{
-                try {
-                    Thread.sleep(60000);
-                    Message msg3 = new Message();
-                    msg3.what = msgKey3;
-                    mHandler.sendMessage(msg3);
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }while(true);
-        }
-    }
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg3) {
-            super.handleMessage(msg3);
-            if (msg3.what == msgKey3) {
-                ReadHumi();
-                Log.d("NEW","Humi");
-            }
+        public void run() {
+            ReadHumi();
+            handler.postDelayed(this, 60000);
+//            Log.d("handler","333333");
         }
     };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(humiinfo);
+    }
     protected void findView(){
         humiview = (TextView) findViewById(R.id.textView6);
         timeview = (TextView) findViewById(R.id.textView7);

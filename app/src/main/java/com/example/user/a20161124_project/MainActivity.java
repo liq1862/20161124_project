@@ -18,7 +18,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
+import java.util.Date;
+
+import pl.pawelkleczkowski.customgauge.CustomGauge;
+
 import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+import static java.lang.Integer.parseInt;
 
 public class MainActivity extends AppCompatActivity {
     String[] feeds;
@@ -26,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     TextView tempview,humiview,pmview;
     Button totemp,tohumi,topm,torefresh;
     private static final int msgKey1 = 111;
+    CustomGauge cg_temp;
+    CustomGauge cg_humi;
+    Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         ReadData();
 
-        new TimeThread1().start();
+        handler.post(manyinfo);
 //  =========================================================================
 /*Button設定*/
         totemp.setOnClickListener(new View.OnClickListener() {
@@ -78,35 +86,25 @@ public class MainActivity extends AppCompatActivity {
         tohumi =(Button) findViewById(R.id.button2);
         topm =(Button) findViewById(R.id.button3);
         torefresh =(Button) findViewById(R.id.button4);
+        cg_temp = (CustomGauge) findViewById(R.id.gauge2);
+        cg_humi = (CustomGauge) findViewById(R.id.gauge3);
     }
-    public class TimeThread1 extends Thread {
 
+    Runnable manyinfo = new Runnable() {
         @Override
-        public void run () {
-            do{
-                try {
-                    Message msg1 = new Message();
-                    Thread.sleep(60000);
-                    msg1.what = msgKey1;
-                    mHandler.sendMessage(msg1);
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }while(true);
-        }
-    }
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage (Message msg1) {
-            super.handleMessage(msg1);
-            if (msg1.what == msgKey1)
-            {
-                ReadData();
-                Log.d("NEW","Main");
-            }
+        public void run() {
+            ReadData();
+            handler.postDelayed(this, 60000);
+//            Log.d("handler","1111111");
         }
     };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(manyinfo);
+    }
+
     public void ReadData(){
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/feeds.json?results=1",
@@ -121,14 +119,23 @@ public class MainActivity extends AppCompatActivity {
 
                         String temp = data.getFeeds()[(data.getFeeds().length)-1].getfield1();
                         tempview.setText("現在溫度: " + temp + "度");
+
+                        float temp2 =Float.parseFloat(temp);
+                        temp2=temp2*10;
+                        cg_temp.setValue((int)temp2);
 //                        Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
 //最後一筆資料
                         String humi = data.getFeeds()[(data.getFeeds().length)-1].getfield2();
                         humiview.setText("現在濕度: " + humi);
+                        float temp3 =Float.parseFloat(humi);
+                        temp3=temp3*10;
+                        cg_humi.setValue((int)temp3);
+                        cg_humi.setPointStartColor(R.color.md_blue_800);
 //                        Log.d("Humi  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield2());
 
                         String pm_2_5 = data.getFeeds()[(data.getFeeds().length)-1].getfield3();
                         pmview.setText("PM2.5: " + pm_2_5);
+
 //                        Log.d("PM2.5  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield3());
 // ==================================================================================
 //    /*JSON格式讀取*/

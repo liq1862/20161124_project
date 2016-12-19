@@ -22,6 +22,7 @@ public class Temp extends AppCompatActivity {
     TextView tempview,timeview,averageview;
     WebView wv1;
     private static final int msgKey2 = 112;
+    Handler handler = new Handler();
 
 
     @Override
@@ -33,7 +34,7 @@ public class Temp extends AppCompatActivity {
 
         ReadTemp();
 
-        new TimeThread2().start();
+        handler.post(tempinfo);
 
 // =================================================================================
     /*顯示圖表*/
@@ -50,33 +51,21 @@ public class Temp extends AppCompatActivity {
         wv1.loadUrl("https://thingspeak.com/channels/189185/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=10&title=Temperature&type=line&width=300&height=250");
 //  ===================================================================================
     }
-    public class TimeThread2 extends Thread {
-
+    Runnable tempinfo = new Runnable() {
         @Override
-        public void run () {
-            do{
-                try {
-                    Thread.sleep(60000);
-                    Message msg2 = new Message();
-                    msg2.what = msgKey2;
-                    mHandler.sendMessage(msg2);
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }while(true);
-        }
-    }
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg2) {
-            super.handleMessage(msg2);
-            if (msg2.what == msgKey2) {
-                ReadTemp();
-                Log.d("NEW","Temp");
-            }
+        public void run() {
+            ReadTemp();
+            handler.postDelayed(this, 60000);
+//            Log.d("handler","222222");
         }
     };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(tempinfo);
+    }
+
     public void ReadTemp(){
         RequestQueue queue = Volley.newRequestQueue(Temp.this);
         StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/1.json?results=10",
