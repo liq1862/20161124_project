@@ -9,6 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/md_brown_100"
     tools:context="com.example.user.a20161124_project.MainActivity">
 
     <LinearLayout
@@ -45,8 +46,8 @@
 
             <pl.pawelkleczkowski.customgauge.CustomGauge
                 android:id="@+id/gauge2"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
+                android:layout_width="110dp"
+                android:layout_height="120dp"
                 android:layout_below="@+id/gauge1"
                 android:layout_centerHorizontal="true"
                 android:paddingBottom="10dp"
@@ -54,8 +55,8 @@
                 android:paddingRight="10dp"
                 android:paddingTop="10dp"
                 app:gaugeEndValue="500"
-                app:gaugePointEndColor="@color/md_blue_800"
-                app:gaugePointStartColor="@color/md_blue_300"
+                app:gaugePointEndColor="@color/md_amber_700"
+                app:gaugePointStartColor="@color/md_amber_700"
                 app:gaugeStartAngle="135"
                 app:gaugeStartValue="0"
                 app:gaugeStrokeCap="ROUND"
@@ -64,17 +65,36 @@
                 app:gaugeSweepAngle="270" />
             <pl.pawelkleczkowski.customgauge.CustomGauge
                 android:id="@+id/gauge3"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
+                android:layout_width="110dp"
+                android:layout_height="120dp"
                 android:layout_below="@+id/gauge1"
                 android:layout_centerHorizontal="true"
+                app:gaugePointEndColor="@color/md_amber_700"
+                app:gaugePointStartColor="@color/md_amber_700"
                 android:paddingBottom="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingTop="10dp"
                 app:gaugeEndValue="500"
-                app:gaugePointEndColor="@color/md_blue_800"
-                app:gaugePointStartColor="@color/md_blue_300"
+                app:gaugeStartAngle="135"
+                app:gaugeStartValue="0"
+                app:gaugeStrokeCap="ROUND"
+                app:gaugeStrokeColor="@color/md_grey_400"
+                app:gaugeStrokeWidth="10dp"
+                app:gaugeSweepAngle="270" />
+            <pl.pawelkleczkowski.customgauge.CustomGauge
+                android:id="@+id/gauge4"
+                android:layout_width="110dp"
+                android:layout_height="120dp"
+                android:layout_below="@+id/gauge1"
+                android:layout_centerHorizontal="true"
+                app:gaugePointEndColor="@color/md_amber_700"
+                app:gaugePointStartColor="@color/md_amber_700"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                app:gaugeEndValue="35000"
                 app:gaugeStartAngle="135"
                 app:gaugeStartValue="0"
                 app:gaugeStrokeCap="ROUND"
@@ -108,13 +128,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/button3"
-                android:layout_weight="1" />
-
-            <Button
-                android:text="重新載入"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/button4"
                 android:layout_weight="1" />
 
         </LinearLayout>

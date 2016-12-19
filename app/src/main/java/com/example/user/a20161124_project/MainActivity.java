@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int msgKey1 = 111;
     CustomGauge cg_temp;
     CustomGauge cg_humi;
+    CustomGauge cg_pm;
     Handler handler = new Handler();
 
     @Override
@@ -68,12 +69,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent2);
             }
         });
-        torefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ReadData();
-            }
-        });
 
 
     }
@@ -85,9 +80,9 @@ public class MainActivity extends AppCompatActivity {
         totemp =(Button) findViewById(R.id.button1);
         tohumi =(Button) findViewById(R.id.button2);
         topm =(Button) findViewById(R.id.button3);
-        torefresh =(Button) findViewById(R.id.button4);
         cg_temp = (CustomGauge) findViewById(R.id.gauge2);
         cg_humi = (CustomGauge) findViewById(R.id.gauge3);
+        cg_pm = (CustomGauge) findViewById(R.id.gauge4);
     }
 
     Runnable manyinfo = new Runnable() {
@@ -127,14 +122,18 @@ public class MainActivity extends AppCompatActivity {
 //最後一筆資料
                         String humi = data.getFeeds()[(data.getFeeds().length)-1].getfield2();
                         humiview.setText("現在濕度: " + humi);
+
                         float temp3 =Float.parseFloat(humi);
                         temp3=temp3*10;
                         cg_humi.setValue((int)temp3);
-                        cg_humi.setPointStartColor(R.color.md_blue_800);
 //                        Log.d("Humi  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield2());
 
                         String pm_2_5 = data.getFeeds()[(data.getFeeds().length)-1].getfield3();
                         pmview.setText("PM2.5: " + pm_2_5);
+
+                        float temp4 =Float.parseFloat(pm_2_5);
+                        temp4=temp4*100;
+                        cg_pm.setValue((int)temp4);
 
 //                        Log.d("PM2.5  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield3());
 // ==================================================================================
