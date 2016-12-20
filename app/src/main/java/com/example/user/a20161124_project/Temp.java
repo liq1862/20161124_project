@@ -68,7 +68,7 @@ public class Temp extends AppCompatActivity {
 
     public void ReadTemp(){
         RequestQueue queue = Volley.newRequestQueue(Temp.this);
-        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/1.json?results=10",
+        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/1.json?results=10&timezone=Asia/Taipei",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

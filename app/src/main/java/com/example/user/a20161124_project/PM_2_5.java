@@ -66,7 +66,7 @@ public class PM_2_5 extends AppCompatActivity {
 
     public void ReadPM(){
         RequestQueue queue = Volley.newRequestQueue(PM_2_5.this);
-        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/3.json?results=10",
+        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/3.json?results=10&timezone=Asia/Taipei",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -80,13 +80,14 @@ public class PM_2_5 extends AppCompatActivity {
                         pmview.setText("PM2.5 :  " + pm_2_5);
                         timeview.setText("測量時間:" + time2);
 
-                        Double sum=0.0;
+                        Float sum=0.0f;
                         for(int i=0 ; i<data.getFeeds().length ; i++) {
                             String pm = data.getFeeds()[i].getfield3();
-                            sum += (Double.valueOf(pm));
+                            sum += (Float.valueOf(pm));
                         }
-                        Double avg = sum / 10.0 ;
-                        averageview.setText("平均濃度:" + avg.toString());
+                        Float avg =(float) (sum / 10.0) ;
+                        Float avg2 =(float) (Math.round((avg*10.0))/10.0);
+                        averageview.setText("平均濃度:" + avg2.toString());
 //                        Log.d("AVG: ",avg.toString());
                     }
                 }, new Response.ErrorListener() {

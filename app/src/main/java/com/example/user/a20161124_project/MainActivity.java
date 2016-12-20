@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void ReadData(){
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/feeds.json?results=1",
+        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/feeds.json?results=1&timezone=Asia/Taipei",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 //                        Log.d("Temp  " , data.getFeeds()[(data.getFeeds().length)-1].getfield1());
 //最後一筆資料
                         String humi = data.getFeeds()[(data.getFeeds().length)-1].getfield2();
-                        humiview.setText("現在濕度: " + humi);
+                        humiview.setText("現在濕度: " + humi + "%RH");
 
                         float temp3 =Float.parseFloat(humi);
                         temp3=temp3*10;
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 //                        Log.d("Humi  " , data.getFeeds()[((data.getFeeds().length)-1)].getfield2());
 
                         String pm_2_5 = data.getFeeds()[(data.getFeeds().length)-1].getfield3();
-                        pmview.setText("PM2.5: " + pm_2_5);
+                        pmview.setText("PM2.5: " + pm_2_5 + "");
 
                         float temp4 =Float.parseFloat(pm_2_5);
                         temp4=temp4*100;

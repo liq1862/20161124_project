@@ -75,7 +75,7 @@ public class Humi extends AppCompatActivity {
     }
     public void ReadHumi(){
         RequestQueue queue = Volley.newRequestQueue(Humi.this);
-        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/2.json?results=10",
+        StringRequest request = new StringRequest("https://api.thingspeak.com/channels/189185/fields/2.json?results=10&timezone=Asia/Taipei",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
